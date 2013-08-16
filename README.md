@@ -330,7 +330,68 @@ As your application grows, it becomes more and more important to separate out bi
 
 Ratpack provides a very powerful dependency injection mechanism powered by Google Guice. 
 
+While there is a more direct mechanism for injecting dependencies, Ratpack also offers the ability to define dependencies via modules.
 
+If you look at the [MongoDB Ratpack Angular project](https://github.com/tomaslin/ratpack-mongo-angular/blob/master/server/src/ratpack/ratpack.groovy), you will see that there is a reference to modules as follows:
+
+```groovy
+ratpack {
+
+    modules {
+        register new MongoModule(new File('config.groovy'))
+    }
+
+    handlers { MongoService mongoService -> // (1)
+       ...
+    }
+}
+```
+
+In (1), we are calling the injected service globally so it applies to the all the handlers. 
+
+If I go to the (MongoModule)[https://github.com/tomaslin/ratpack-mongo-angular/blob/master/server/src/main/groovy/com/tomaslin/mongopack/MongoModule.groovy], you can see that it injects a mongo service based on the provided configuration,
+
+```groovy
+package com.tomaslin.mongopack
+
+import com.google.inject.AbstractModule
+
+class MongoModule extends AbstractModule{
+
+    private static ConfigObject config
+
+    MongoModule(File cfg) {
+        config = new ConfigSlurper().parse(cfg.text).app
+    }
+
+    @Override
+    protected void configure() {
+        ...
+        bind(MongoService).toInstance(new MongoService(host, port, username, password, db)) // (2)
+    }
+
+}
+```
+
+The most important line here is (2), where the actual mongo service is bound to the module context.
+
+This is then available to (1) above and provides a nice simple way of adding additional functionality to our applications without poluting the ratpack.groovy server script too much.
+
+###Per handler dependency injection
+
+Injected services can also be accessed on a per handler basis instead of globally. 
+
+This looks as follows:
+
+```groovy
+post("api/person") { PeopleDAO dao ->
+   accepts.type("application/json") {
+       response.send serialize(dao.save(request.text))
+   }.send()
+}
+```
+
+Notice that the injected dependency is referenced at the handler level adn not in the handlers closure.
 
 ##Deploying your application to the Cloud.
 
