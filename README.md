@@ -186,7 +186,44 @@ Now the image can be found at http://localhost:5050/images/public/today/myimage.
 
 So far, we have only been returning text in our application. But ratpack comes with the ability use external templates. 
 
-TBD - GroovyTemplates and Handlebars
+Here is a very simple handler that uses a groovyTemplate:
+
+```groovy
+import static org.ratpackframework.groovy.RatpackScript.ratpack
+import static org.ratpackframework.groovy.Template.groovyTemplate
+
+ratpack {
+    handlers {
+        get {
+            render groovyTemplate("index.html", title: "My Ratpack App", content: "Saul Goodman is your buddy") // (1)
+        }
+    }
+}
+```
+
+Note I added an extra import for static org.ratpackframework.groovy.Template.groovyTemplate.
+
+Let's take a look at the actual rendering function, it takes in a groovyTemplate followed by a map of values.
+
+The template looks as follows:
+
+```html
+<!doctype html>
+<head>
+  <title>${model.title}</title>
+</head>
+<body>
+	${model.content}
+</body>
+</html>
+```
+
+ratpack will look for the template relative to place where the script is being ran. So this template should be saved under template/index.html.
+
+When we run this, you should get an html page where all the values inside ${} are replaced by the real values.
+
+There is also an implementation of using HandleBars templates by Marcin Erdman. Look at [the implementation](https://github.com/ratpack/ratpack/tree/master/ratpack-handlebars) for more details.
+
 
 ##Blocking Operations
 
@@ -291,9 +328,9 @@ There is a section with github repositories of other example applications if you
 
 As your application grows, it becomes more and more important to separate out bits of code so they can be tested and developed in isolation.
 
-Ratpack provides a very powerful dependency injection mechanism powered by Google Guice.
+Ratpack provides a very powerful dependency injection mechanism powered by Google Guice. 
 
-TBD example.
+
 
 ##Deploying your application to the Cloud.
 
