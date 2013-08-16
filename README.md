@@ -222,7 +222,78 @@ get {
 
 ##Building a Java-based application with Gradle.
 
+While our small script is nice, it is fairly difficult to deploy and grow. We really need a good project structure to hold our application together.
+
+Luckily, there is a tool called LazyBones that is capable of generating a good Groovy / Gradle application template for us.
+
+First, install Lazybones
+
+```bash
+gvm install lazybones
+```
+
+Next, create your Ratpack project and provide it with a name,
+
+```bash
+lazybones create ratpack myApp
+```
+
+Bear in mind that there are two versions of the ratpack module, ratpack-lite is a stripped down bared bones template with little or no content.
+
+You should now see an application created for you. To run the application, simply call
+
+```bash
+./gradlew run
+```
+
+To create a deployable version of your application, call
+
+```bash
+./gradlew iA
+```
+
+Let's explore the generated structure:
+
+```
+├── README.md
+├── build.gradle
+├── gradle
+├── gradlew
+├── gradlew.bat
+└── src
+    ├── main
+    │   └── groovy
+    ├── ratpack
+    │   ├── config.groovy
+    │   ├── public
+    │   │   ├── images
+    │   │   ├── lib
+    │   │   ├── scripts
+    │   │   └── styles
+    │   ├── ratpack.groovy
+    │   └── templates
+    │       └── index.html
+    └── test
+        └── groovy
+```
+
+In this template, you can put your tests under src/test/groovy and your main code under src/main/groovy.
+
+There is a config.groovy file that adds additional parameters to your application, as well as a ratpack.groovy file that contains an example of templating and has static assets set up to serve from the public directory.
+
+Overall, this template is very intuitive and I highly recommend using this structure instead of trying to forage your own bit of madness.
+
+There is a section with github repositories of other example applications if you would like to explore alternatives.
+
+( There is currently a bug in the generated template - I have submitted a [pull request](https://github.com/pledbrook/lazybones/pull/72) )
+
 ##Modularizing your application.
+
+As your application grows, it becomes more and more important to separate out bits of code so they can be tested and developed in isolation.
+
+Ratpack provides a very powerful dependency injection mechanism powered by Google Guice.
+
+TBD example.
 
 ##Deploying your application to the Cloud.
 
@@ -241,3 +312,4 @@ get {
 There are a few good projects you can look at for inspiration:
 * [FOASS](https://github.com/danveloper/ratpack-foaas/)
 * [Ratpack Website](https://github.com/ratpack/ratpack/tree/master/ratpack-site)
+* [GORM and MongoDB with Ratpack](https://github.com/tyama/ratpack-gorm-mongo-example/)
