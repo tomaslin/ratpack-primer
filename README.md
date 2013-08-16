@@ -222,7 +222,7 @@ ratpack will look for the template relative to place where the script is being r
 
 When we run this, you should get an html page where all the values inside ${} are replaced by the real values.
 
-There is also an implementation of using HandleBars templates by Marcin Erdman. Look at [the implementation](https://github.com/ratpack/ratpack/tree/master/ratpack-handlebars) for more details.
+There is also an implementation of using HandleBars templates by Marcin Erdmann. Look at [the implementation](https://github.com/ratpack/ratpack/tree/master/ratpack-handlebars) for more details.
 
 
 ##Blocking Operations
@@ -410,4 +410,5 @@ Notice that the injected dependency is referenced at the handler level adn not i
 There are a few good projects you can look at for inspiration:
 * [FOASS](https://github.com/danveloper/ratpack-foaas/)
 * [Ratpack Website](https://github.com/ratpack/ratpack/tree/master/ratpack-site)
+* [Mid Century Ipsum](https://github.com/robfletcher/midcentury-ipsum/)
 * [GORM and MongoDB with Ratpack](https://github.com/tyama/ratpack-gorm-mongo-example/)
