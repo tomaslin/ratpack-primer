@@ -14,7 +14,7 @@ If you don't have the Java JDK and JAVA_HOME set, follow this guide ( http://doc
 
 The easiest way to install groovy is via the GVM tool. Open a terminal and type:
 
-```bash
+```
 curl -s get.gvmtool.net | bash
 gvm install groovy
 ```
@@ -23,7 +23,7 @@ gvm install groovy
 
 Open a text file and save it as ratpack.groovy
 
-```groovy
+```
 @GrabResolver("https://oss.jfrog.org/artifactory/repo") // (1)
 @Grab("org.ratpack-framework:ratpack-groovy:0.9.0-SNAPSHOT") // 
 
@@ -65,7 +65,7 @@ Let's break down the script a little bit. Leave the server running now.
 
 Let's try adding another handler. Open the ratpack.groovy file and add a second handler:
 
-```groovy
+```
 ratpack { 
     handlers { 
         get { 
@@ -88,7 +88,7 @@ But this is the web. It should be exciting and fun. We should at least be able t
 
 Let's change our echo handler so it returns what we entered:
 
-```groovy
+```
 get('echo/:message'){
     response.send pathTokens.message
 }
@@ -108,7 +108,7 @@ Let's change our echo server to optionally remove parts of my message.
 
 This can be done by adding a question mark at the end of the optional parameter. :this?
 
-```groovy
+```
 get('echo/:message/:trim?'){
     response.send pathTokens.message - pathTokens.trim
 }
@@ -119,7 +119,7 @@ get('echo/:message/:trim?'){
 
 You can have as many optional path tokens as you want as long as they are not followed by a mandatory token. 
 
-```groovy
+```
 get('echo/:message/:trim?/:add?'){
 	response.send pathTokens.message - pathTokens.trim + ( pathTokens.add?:'' )
 }
@@ -134,7 +134,7 @@ You can also have query parameters via the request.queryParams field in your han
 
 In the following example, we capitalize a message if the upper=true query parameter is passed into our handler.
 
-```groovy
+```
 get('echo/:message'){
 	String message = pathTokens.message
 	if( request.queryParams.upper ){
@@ -162,7 +162,7 @@ Now, we can create a simple handler for this directory.
 
 In your ratpack.groovy file, add the following lines at the end:
 
-```groovy
+```
 prefix('images'){
 		assets "images"
 }
@@ -174,7 +174,7 @@ The assets hierarchy also mirrors your folder structure; Add a file under images
 
 It does not have to be a direct match to a directory, you can change the path
 
-```groovy
+```
 prefix('images/public/today'){
 		assets "images"
 }
@@ -188,7 +188,7 @@ So far, we have only been returning text in our application. But ratpack comes w
 
 Here is a very simple handler that uses a groovyTemplate:
 
-```groovy
+```
 import static org.ratpackframework.groovy.RatpackScript.ratpack
 import static org.ratpackframework.groovy.Template.groovyTemplate
 
@@ -231,7 +231,7 @@ One of the interesting features about ratpack is the fact that calls are non-blo
 
 Here is an example from the FOASS application that converts a string of text into an mp3 before serving it back to the user:
 
-```groovy
+```
 prefix("mp3") {
   get(":type/:p1/:p2?") {
     def (to, from, type) = betterPathTokens
@@ -247,7 +247,7 @@ The exec blocking block takes in a few closures, the first one is the blocking o
 
 You can also provide an optional failure condition to the exec blocking operation, as outlined by the following test:
 
-```groovy
+```
 get {
        exec blocking,
           { sleep 300; throw new Exception("!") }, // blocking
@@ -265,13 +265,13 @@ Luckily, there is a tool called LazyBones that is capable of generating a good G
 
 First, install Lazybones
 
-```bash
+```
 gvm install lazybones
 ```
 
 Next, create your Ratpack project and provide it with a name,
 
-```bash
+```
 lazybones create ratpack myApp
 ```
 
@@ -279,13 +279,13 @@ Bear in mind that there are two versions of the ratpack module, ratpack-lite is 
 
 You should now see an application created for you. To run the application, simply call
 
-```bash
+```
 ./gradlew run
 ```
 
 To create a deployable version of your application, call
 
-```bash
+```
 ./gradlew iA
 ```
 
@@ -334,7 +334,7 @@ While there is a more direct mechanism for injecting dependencies, Ratpack also 
 
 If you look at the [MongoDB Ratpack Angular project](https://github.com/tomaslin/ratpack-mongo-angular/blob/master/server/src/ratpack/ratpack.groovy), you will see that there is a reference to modules as follows:
 
-```groovy
+```
 ratpack {
 
     modules {
@@ -351,7 +351,7 @@ In (1), we are calling the injected service globally so it applies to the all th
 
 If I go to the (MongoModule)[https://github.com/tomaslin/ratpack-mongo-angular/blob/master/server/src/main/groovy/com/tomaslin/mongopack/MongoModule.groovy], you can see that it injects a mongo service based on the provided configuration,
 
-```groovy
+```
 package com.tomaslin.mongopack
 
 import com.google.inject.AbstractModule
@@ -383,7 +383,7 @@ Injected services can also be accessed on a per handler basis instead of globall
 
 This looks as follows:
 
-```groovy
+```
 post("api/person") { PeopleDAO dao ->
    accepts.type("application/json") {
        response.send serialize(dao.save(request.text))
